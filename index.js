@@ -1,11 +1,16 @@
 const express = require("express");
 const filmRepo = require("./assets/film-repo");
 const actorRepo = require("./assets/actor-repo");
+const verifyJWT = require("./controllers/verifyJWT");
 
 const app = new express();
 const router = express.Router();
 
 app.use(express.json());
+app.use("/auth", require("./routes/auth"));
+
+app.use(verifyJWT);
+
 app.get("/all", (req, res) => {
   filmRepo.getAll(
     function (result) {
