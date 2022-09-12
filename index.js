@@ -1,15 +1,19 @@
 const express = require("express");
 const filmRepo = require("./assets/film-repo");
 const actorRepo = require("./assets/actor-repo");
-const verifyJWT = require("./controllers/verifyJWT");
+const { verifyJWT, getAudienceFromToken } = require("./controllers/verifyJWT");
 
+const cookieParser = require("cookie-parser");
 const app = new express();
 const router = express.Router();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use("/auth", require("./routes/auth"));
 
-app.use(verifyJWT);
+app.use("/staffroutes", require("./routes/staffRoutes"));
+
+// Everything under verifyJWT will need token / authorization header
 
 app.get("/all", (req, res) => {
   filmRepo.getAll(

@@ -15,6 +15,16 @@ connection.connect(function (err) {
 });
 
 let customerRepo = {
+  getAll: function (resolve, reject) {
+    let sql = `Select * FROM customer`;
+    let qurey = connection.query(sql, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  },
   findCustomer: function (customerObject, resolve, reject) {
     console.log(customerObject.firstName);
     let sql =

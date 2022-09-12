@@ -1,4 +1,5 @@
 const mysql = require("mysql");
+const { connect } = require("../routes/auth");
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -57,6 +58,31 @@ let filmRepo = {
         resolve(result);
       }
     });
+  },
+
+  // STAFF ONLY
+
+  createFilm: function (film, resolve, reject) {
+    let sql =
+      "INSERT INTO film (title, language_id, rental_duration, rental_rate, replacement_cost) VALUES (?, ?, ?, ?, ?)";
+    console.log(film);
+    let query = connection.query(
+      sql,
+      [
+        film.title,
+        film.language_id,
+        film.rental_duration,
+        film.rental_rate,
+        film.replacement_cost,
+      ],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
   },
 };
 
