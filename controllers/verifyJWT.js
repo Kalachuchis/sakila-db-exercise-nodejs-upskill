@@ -24,10 +24,7 @@ const verifyJWT = (req, res, next) => {
 const verifyAudienceFromToken = (req, res, next) => {
   const jwtToken = req.headers["authorization"];
   const tokenAudience = jwt.decode(jwtToken)["aud"];
-  console.log(tokenAudience);
-  console.log(constants.staff);
   const isStaff = tokenAudience.includes(constants.staff);
-  console.log(isStaff);
   if (!isStaff) {
     return res.status(403).send({
       message: "You are not authorized to view this page",
@@ -37,4 +34,10 @@ const verifyAudienceFromToken = (req, res, next) => {
   }
 };
 
-module.exports = { verifyJWT, verifyAudienceFromToken };
+const getSubjectFromToken = (token) => {
+  // const jwtToken = req.headers["authorization"];
+  const tokenSubject = jwt.decode(token)["sub"];
+
+  return tokenSubject;
+};
+module.exports = { verifyJWT, verifyAudienceFromToken, getSubjectFromToken };

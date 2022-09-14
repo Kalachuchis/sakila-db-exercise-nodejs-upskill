@@ -18,6 +18,7 @@ const handleLogin = async (req, res) => {
     const foundUser = customerRepo.findCustomer(
       req.body,
       (result) => {
+        console.log(result);
         const options = {
           expiresIn: "1h",
           audience: roles.customer,

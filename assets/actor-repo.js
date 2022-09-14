@@ -25,12 +25,13 @@ let actorRepo = {
       }
     });
   },
+
   getByName: function (nameObject, resolve, reject) {
     let sql = `SELECT * FROM actor WHERE last_name LIKE ? AND first_name LIKE ?`;
     console.log(nameObject);
     let query = connection.query(
       sql,
-      [nameObject.lastName, nameObject.firstName],
+      [nameObject.last_name, nameObject.first_name],
       (err, result) => {
         if (err) {
           reject(err);
@@ -39,6 +40,57 @@ let actorRepo = {
         }
       }
     );
+  },
+
+  createActor: function (actor, resolve, reject) {
+    let sql = "INSERT INTO actor (first_name, last_name) VALUES (?, ?)";
+    console.log(actor);
+    let query = connection.query(
+      sql,
+      [actor.first_name, actor.last_name],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  },
+
+  // getActor: async function (actor, resolve, reject) {
+  //   let sql = "SELECT * FROM actor WHERE title = ? ";
+  //   let search = actor;
+  //   let query = connection.query(sql, [actor], (err, result) => {
+  //     if (err) {
+  //       reject(err);
+  //     } else {
+  //       resolve(result);
+  //     }
+  //   });
+  // },
+
+  deleteActor: function (actorId, resolve, reject) {
+    let sql = "DELETE FROM actor WHERE actor_id = ?";
+    let query = connection.query(sql, actorId, (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  },
+
+  updateActor: function (actorId, updateActor, resolve, reject) {
+    //TODO: UPDATE actor
+    let sql = "UPDATE actor SET ? WHERE actor_id = ?";
+    let query = connection.query(sql, [updateActor, actorId], (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
   },
 };
 

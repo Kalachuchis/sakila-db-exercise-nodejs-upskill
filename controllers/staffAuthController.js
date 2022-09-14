@@ -23,6 +23,7 @@ const handleLogin = async (req, res) => {
       const options = {
         expiresIn: "1h",
         audience: roles.staff,
+        subject: `${foundStaff[0].staff_id}`,
       };
       console.log(options.audience);
       let match =

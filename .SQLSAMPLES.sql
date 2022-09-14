@@ -37,3 +37,13 @@ film.film_id in
 (SELECT actor_id FROM actor WHERE last_name LIKE 'davis')
 )
 GROUP BY film.film_id;
+
+
+SELECT title, inventory.inventory_id,  inventory.last_update FROM inventory
+    JOIN film ON inventory.film_id = film.film_id 
+    WHERE inventory.inventory_id NOT IN (SELECT inventory_id FROM inventory
+join film using(film_id)
+        JOIN rental USING (inventory_id)
+        WHERE return_date IS NULL
+        order by inventory_id;)
+    ORDER BY film.film_id;

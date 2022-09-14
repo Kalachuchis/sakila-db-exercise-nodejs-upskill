@@ -11,24 +11,11 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/auth", require("./routes/auth"));
 
-app.use("/staffroutes", require("./routes/staffRoutes"));
-
 // Everything under verifyJWT will need token / authorization header
+app.use(verifyJWT);
 
-app.get("/all", (req, res) => {
-  filmRepo.getAll(
-    function (result) {
-      res.status(200).json({
-        staus: 200,
-        data: result,
-      });
-    },
-    (err) => {
-      throw err;
-    }
-  );
-});
-
+// routes used by staff
+app.use("/staffroutes", require("./routes/staffRoutes"));
 // GET FILMS BY TITLE
 router.get("/film/title/:title", (req, res, next) => {
   let search = `%${req.params.title}%`;
@@ -79,7 +66,6 @@ router.get("/film/actor/:actorln", (req, res, next) => {
     search,
     (results) => {
       if (results.length) {
-        console.log(results);
         res.status(200).json({
           status: 200,
           statusText: "OK",
@@ -128,8 +114,8 @@ router.get("/actor", (req, res, next) => {
 //        name.lastname = '%%'
 router.get("/actor/search", (req, res, next) => {
   let name = {
-    lastName: `%${req.query.lastname}%`,
-    firstName: `%${req.query.firstname}%`,
+    last_name: `%${req.query.lastname}%`,
+    first_name: `%${req.query.firstname}%`,
   };
   actorRepo.getByName(
     name,
